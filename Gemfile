@@ -12,6 +12,7 @@ group :development, :test do
   gem 'rspec-rails', '2.9.0'
   gem 'guard-rspec', '0.5.5'
   gem 'cucumber-rails', '1.2.1'
+  gem 'database_cleaner', '0.7.2'
 end
 
 # Gems used only for assets and not required
