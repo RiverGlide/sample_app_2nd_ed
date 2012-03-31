@@ -3,16 +3,40 @@ MESSAGES=GREEDY_CAPTURE
 ADDRESS=GREEDY_CAPTURE
 
 Given /^I have started registration$/ do
-  pending # express the regexp above with the code you wish you had
+  #Given I have opened the homepage
+  visit '/'
+  #When I click on the 'sign-up' button
+  click_on 'Sign up now!'
+  #Then I should see the registration page
+  page.should have_content('Sign up')
 end
 
 When /^I complete registration with the following:$/ do |table|
-  # table is a Cucumber::Ast::Table
-  pending # express the regexp above with the code you wish you had
+  #When I fill in the name with 'andy'
+  #And I fill in the email with 'andy@example.com'
+  #And I fill in the password with 'p4$$wd'
+  #And I fill in the confirmation with 'p4$$wd'
+  #And I click the create my account button
+  table.map_column!('Field') do |field_name|
+    prefix = "user_"
+    prefix = "#{prefix}password_" if field_name =~ /confirmation/
+    "#{prefix}#{field_name}"
+  end
+
+  table.hashes.each do |row|
+    field = row.fetch('Field')
+    value = row.fetch('Value')
+    @username = value if field =~ /name/
+    fill_in(field, :with => value)
+  end
+  click_on 'Create my account'
 end
 
 Then /^I should see that I am registered$/ do
-  pending # express the regexp above with the code you wish you had
+  #Then I should see the message 'Welcome to the Sample App!'
+  page.should have_css('.alert-success', :text => 'Welcome to the Sample App!')
+  #And I should see my username as 'andy'
+  page.should have_css('h1', :text => @username)
 end
 
 Given /^a user with the email '#{ADDRESS}' exists$/ do |email|
