@@ -12,10 +12,10 @@ Given /^I have started registration$/ do
 end
 
 When /^I complete registration with the following:$/ do |table|
-  #When I fill in the name with 'andy'
-  #And I fill in the email with 'andy@example.com'
-  #And I fill in the password with 'p4$$wd'
-  #And I fill in the confirmation with 'p4$$wd'
+  #When I fill in the name with <name>
+  #And I fill in the email with <email>
+  #And I fill in the password with <password>
+  #And I fill in the confirmation with <confirmation>
   #And I click the create my account button
   table.map_column!('Field') do |field_name|
     prefix = "user_"
@@ -44,5 +44,10 @@ Given /^a user with the email '#{ADDRESS}' exists$/ do |email|
 end
 
 Then /^I should see (?:the|these) registration error #{MESSAGES}$/ do |messages|
-  pending # express the regexp above with the code you wish you had
+  #Then I should see the form has <number> errors
+  number_of_errors_reported = page.find('.alert').text.match(/(\d+)/)[1].to_i
+  number_of_errors_expected = messages.split.count('*')
+  number_of_errors_reported.should == number_of_errors_expected
+  #Then I should see the <messages>
+  page.should have_content messages
 end

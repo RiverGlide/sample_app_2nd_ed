@@ -15,25 +15,13 @@ Feature: Registration
 
   Scenario Outline: Invalid details
     Given I have started registration
-    #Given I have opened the homepage
-    #When I click on the 'sign-up' button
-    #Then I should see the registration page
     When I complete registration with the following:
       | Field        | Value             |
       | name         | <name>            |
       | email        | <email>           |
       | password     | <password>        |
       | confirmation | <confirmation>    |
-
-      #When I fill in the name with <name>
-      #And I fill in the email with <email>
-      #And I fill in the password with <password>
-      #And I fill in the confirmation with <confirmation>
-      #And I click the create my account button
-
     Then I should see these registration error <messages>
-    #Then I should see the form has <number> errors
-    #Then I should see the <messages>
 
   Examples:
       | name | email            | password | confirmation |  messages                                                                                                                                                                           |
