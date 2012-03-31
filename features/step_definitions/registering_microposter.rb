@@ -1,5 +1,5 @@
 GREEDY_CAPTURE='(.*)'
-MESSAGES=GREEDY_CAPTURE
+MESSAGES='\'?(.*[^\'])\'?$'
 ADDRESS=GREEDY_CAPTURE
 
 Given /^I have started registration$/ do
@@ -40,7 +40,7 @@ Then /^I should see that I am registered$/ do
 end
 
 Given /^a user with the email '#{ADDRESS}' exists$/ do |email|
-  pending # express the regexp above with the code you wish you had
+  Factory(:user, :email => email)
 end
 
 Then /^I should see (?:the|these) registration error #{MESSAGES}$/ do |messages|
