@@ -3,8 +3,10 @@ Feature: Registration
   I want to register
   So that I can explore this microblogging phenomenon
 
-  Scenario: Register successfully
+  Background: Andy has decided to register
     Given I have started registration
+
+  Scenario: Register successfully
     When I complete registration with the following:
       | Field                 | Value             |
       | name                  | Andy              |
@@ -14,8 +16,7 @@ Feature: Registration
     Then I should see that I am registered
 
   Scenario Outline: Receive advice about registration problems
-    Given I have started registration
-    And a user with the email 'andrew@example.com' exists
+    Given a user with the email 'andrew@example.com' exists
     When I complete registration with the following:
       | Field                 | Value             |
       | name                  | <name>            |
