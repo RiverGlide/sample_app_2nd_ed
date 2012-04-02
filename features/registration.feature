@@ -5,6 +5,16 @@ Feature: Registration
 
   Background: Andy has decided to register
     Given I have started registration
+    And I find this advice helpful
+      | Problem                     | Advice                                            |
+      | blank password              | * Password can't be blank                         |
+      | blank name                  | * Name can't be blank                             |
+      | blank email                 | * Email can't be blank                            | 
+      | invalid email               | * Email is invalid                                |
+      | short password              | * Password is too short (minimum is 6 characters) |
+      | blank password confirmation | * Password confirmation can't be blank            |
+      | mismatched password         | * Password doesn't match confirmation             | 
+      | unavailable user id         | * Email has already been taken                    | 
 
   Scenario: Register successfully
     When I complete registration with the following:
@@ -23,13 +33,13 @@ Feature: Registration
       | email                 | <email>           |
       | password              | <password>        |
       | password confirmation | <confirmation>    |
-    Then I should see these registration error '<messages>'
+    Then I should be advised on how to deal with these <problems>
 
-  Examples: of common registration problems
-      | name | email              | password | confirmation |  messages                                                                                                                                                                           |
-      |      |                    |          |              |  * Password can't be blank * Name can't be blank * Email can't be blank * Email is invalid * Password is too short (minimum is 6 characters) * Password confirmation can't be blank |
-      | andy | andy               |          |              |  * Password can't be blank * Email is invalid * Password is too short (minimum is 6 characters) * Password confirmation can't be blank                                              |
-      | andy | andy@example.com   |          |              |  * Password can't be blank * Password is too short (minimum is 6 characters) * Password confirmation can't be blank                                                                 |
-      | andy | andy@example.com   | abcde    |              |  * Password doesn't match confirmation * Password is too short (minimum is 6 characters) * Password confirmation can't be blank                                                     |
-      | andy | andy@example.com   | abcde    | abcde        |  * Password is too short (minimum is 6 characters)                                                                                                                                  |
-      | andy | andrew@example.com | abcdef   | abcdef       |  * Email has already been taken                                                                                                                                                     |
+    Examples: of common registration problems
+      | name | email              | password | confirmation |  problems                                                                                                                                                                           |
+      |      |                    |          |              |  blank password, blank name, blank email, invalid email, short password, blank password confirmation |
+      | Andy | andy               |          |              |  blank password, invalid email, short password, blank password confirmation                          |
+      | Andy | andy@example.com   |          |              |  blank password, short password, blank password confirmation                                         |
+      | Andy | andy@example.com   | abcde    |              |  mismatched password, short password, blank password confirmation                                    |
+      | Andy | andy@example.com   | abcde    | abcde        |  short password                                                                                      |
+      | Andy | andrew@example.com | abcdef   | abcdef       |  unavailable user id                                                                                 |

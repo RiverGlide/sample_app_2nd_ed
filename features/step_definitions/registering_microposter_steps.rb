@@ -1,6 +1,7 @@
 GREEDY_CAPTURE='(.*)'
 MESSAGES='(.*[^\'])'
 ADDRESS=GREEDY_CAPTURE
+PROBLEMS=GREEDY_CAPTURE
   
 Given /^I have started registration$/ do
   #Given I have opened the homepage
@@ -10,6 +11,10 @@ Given /^I have started registration$/ do
   #Then I should see the registration page
   page.should have_content 'Sign up'
   page.should have_button 'Create my account'
+end
+
+Given /^I find this advice helpful$/ do |problem_advice|
+  @problem_advice = problem_advice.rows_hash
 end
 
 When /^I complete registration with the following:$/ do |table|
@@ -44,11 +49,14 @@ Given /^a user with the email '#{ADDRESS}' exists$/ do |email|
   Factory(:user, :email => email)
 end
 
-Then /^I should see (?:the|these) registration error '#{MESSAGES}'$/ do |messages|
-  #Then I should see the form has <number> errors
+Then /^I should be advised on how to deal with these #{PROBLEMS}$/ do |problems|
+  expected_problems = problems.split(', ')
+  expected_advisories = expected_problems.inject([]) {|messages, problem| messages << @problem_advice[problem] }
+  expected_advice = expected_advisories.join(" ")
+  number_of_errors_expected = expected_problems.size
+
   number_of_errors_reported = page.find('.alert').text.match(/(\d+)/)[1].to_i
-  number_of_errors_expected = messages.split.count('*')
   number_of_errors_reported.should == number_of_errors_expected
-  #Then I should see the <messages>
-  page.should have_content messages
+
+  page.should have_content expected_advice
 end
