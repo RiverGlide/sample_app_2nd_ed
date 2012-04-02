@@ -1,7 +1,7 @@
 GREEDY_CAPTURE='(.*)'
 MESSAGES=GREEDY_CAPTURE
 ADDRESS=GREEDY_CAPTURE
-
+  
 Given /^I have started registration$/ do
   #Given I have opened the homepage
   visit '/'
@@ -45,5 +45,10 @@ Given /^a user with the email '#{ADDRESS}' exists$/ do |email|
 end
 
 Then /^I should see (?:the|these) registration error #{MESSAGES}$/ do |messages|
-  pending # express the regexp above with the code you wish you had
+  #Then I should see the form has <number> errors
+  number_of_errors_reported = page.find('.alert').text.match(/(\d+)/)[1].to_i
+  number_of_errors_expected = messages.split.count('*')
+  number_of_errors_expected.should == number_of_errors_reported
+  #Then I should see the <messages>
+  page.should have_content messages
 end
