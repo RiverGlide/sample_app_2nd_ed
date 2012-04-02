@@ -1,5 +1,5 @@
 GREEDY_CAPTURE='(.*)'
-MESSAGES=GREEDY_CAPTURE
+MESSAGES='(.*[^\'])'
 ADDRESS=GREEDY_CAPTURE
   
 Given /^I have started registration$/ do
@@ -41,14 +41,14 @@ Then /^I should see that I am registered$/ do
 end
 
 Given /^a user with the email '#{ADDRESS}' exists$/ do |email|
-  pending # express the regexp above with the code you wish you had
+  Factory(:user, :email => email)
 end
 
-Then /^I should see (?:the|these) registration error #{MESSAGES}$/ do |messages|
+Then /^I should see (?:the|these) registration error '#{MESSAGES}'$/ do |messages|
   #Then I should see the form has <number> errors
   number_of_errors_reported = page.find('.alert').text.match(/(\d+)/)[1].to_i
   number_of_errors_expected = messages.split.count('*')
-  number_of_errors_expected.should == number_of_errors_reported
+  number_of_errors_reported.should == number_of_errors_expected
   #Then I should see the <messages>
   page.should have_content messages
 end
