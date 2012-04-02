@@ -5,26 +5,14 @@ Feature: Registration
 
   Scenario: Successful registration
     Given I have started registration
-    #Given I have opened the homepage
-    #When I click on the 'sign-up' button
-    #Then I should see the registration page
-    
     When I complete registration with the following:
-      | Field        | Value             |
-      | name         | Andy              |
-      | email        | andy@example.com  |
-      | password     | p4$$wd            |
-      | confirmation | p4$$wd            |
-
-      #When I fill in the name with 'andy'
-      #And I fill in the email with 'andy@example.com'
-      #And I fill in the password with 'p4$$wd'
-      #And I fill in the confirmation with 'p4$$wd'
-      #And I click the create my account button
+      | Field                 | Value             |
+      | name                  | Andy              |
+      | email                 | andy@example.com  |
+      | password              | p4$$wd            |
+      | password confirmation | p4$$wd            |
 
     Then I should see that I am registered
-    #Then I should see the message 'Welcome to the Sample App!'
-    #And I should see my username as 'andy'
 
   Scenario Outline: Invalid details
     Given I have started registration
