@@ -11,12 +11,17 @@ def start_registration
   page.should have_button 'Create my account'
 end
 
-Given /^I find this advice helpful$/ do |problem_advice|
-  @problem_advice = problem_advice.rows_hash
+def remember_the relevant, information
+  @memory_of ||= {}
+  @memory_of[relevant] = information
+end
+
 Given /^I have started registration$/ do
   start_registration
 end
 
+Given /^I find this advice helpful$/ do |for_these_problems|
+  remember_the :advice, for_these_problems.rows_hash
 end
 
 When /^I complete registration with the following:$/ do |table|
@@ -46,7 +51,7 @@ end
 
 Then /^I should be advised on how to deal with these #{PROBLEMS}$/ do |problems|
   expected_problems = problems.split(', ')
-  expected_advisories = expected_problems.inject([]) {|messages, problem| messages << @problem_advice[problem] }
+  expected_advisories = expected_problems.inject([]) {|advice, for_problem| advice << @memory_of[:advice][for_problem] }
   expected_advice = expected_advisories.join(" ")
   number_of_errors_expected = expected_problems.size
 
