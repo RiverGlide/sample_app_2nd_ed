@@ -11,17 +11,6 @@ def number_of_errors_on_this page
   page.find('.alert').text.match(/(\d+)/)[1].to_i
 end
 
-def list_of problems
-  problems.split ', '
-end
-
-def advice_for problems
-  advisories = list_of(problems).inject([]) do |advice, for_the_problem| 
-    advice << @assistant.recall_the(:advisories)[for_the_problem]
-  end
-  advisories.join(" ")
-end
-
 def number_of things
   list_of(things).size
 end
@@ -33,7 +22,8 @@ alias with_these for_these
 
 World(
   SampleApp::RegisteringMicroblogger,
-  SampleApp::CustomerServices
+  SampleApp::CustomerServices,
+  SampleApp::Advisor
 )
 
 Given /^I have started registration$/ do
@@ -59,6 +49,6 @@ Given /^someone has registered with the email '#{ADDRESS}'$/ do |address|
 end
 
 Then /^I should be advised on how to deal with these #{PROBLEMS}$/ do |expected_problems|
-  i_should_see(advice_for expected_problems)
+  i_should_see advice_for(expected_problems)
   number_of_errors_on_this(page).should == number_of(expected_problems)
 end
