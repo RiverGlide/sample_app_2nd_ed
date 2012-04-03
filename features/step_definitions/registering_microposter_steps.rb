@@ -33,6 +33,10 @@ def i_should_be_registered_as someone
   page.should have_css('h1', text: someone)
 end
 
+def register_me_with details
+  Factory(:user, :email => details[:email])
+end
+
 Given /^I have started registration$/ do
   start_registration
 end
@@ -53,8 +57,8 @@ Then /^I should see that I am registered$/ do
   i_should_be_registered_as user_name
 end
 
-Given /^someone has registered with the email '#{ADDRESS}'$/ do |email|
-  Factory(:user, :email => email)
+Given /^someone has registered with the email '#{ADDRESS}'$/ do |address|
+  register_me_with email: address
 end
 
 Then /^I should be advised on how to deal with these #{PROBLEMS}$/ do |problems|
