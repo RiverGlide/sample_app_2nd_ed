@@ -1,4 +1,13 @@
+module WebUser
+  def fill_in_the form, with_details
+    with_details.each do |field, value|
+      fill_in form[field], with: value 
+    end
+  end
+end
+
 module RegisteringMicroblogger
+  include WebUser
   
   def registration_form 
     {
@@ -17,21 +26,12 @@ module RegisteringMicroblogger
   end
 
   def complete_registration with_details
-    complete registration_form, with_details
+    fill_in_the registration_form, with_details
+    click_on 'Create my account'
   end
 
   def i_should_be_registered_as someone
     page.should have_css('.alert-success', text: 'Welcome to the Sample App!')
     page.should have_css('h1', text: someone)
   end
-
-  #TODO: Move this somewhere more general and iterate over details instead
-  def complete the_form, details
-    fill_in the_form['name'], with: details['name']
-    fill_in the_form['email'], with: details['email']
-    fill_in the_form['password'], with: details['password']
-    fill_in the_form['password confirmation'], with: details['password confirmation']
-    click_on 'Create my account'
-  end
-
 end

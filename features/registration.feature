@@ -8,7 +8,6 @@ Feature: Registration
 
   Scenario: I can register successfully
     When I complete registration with the following:
-      | Field                 | Value             |
       | name                  | Andy              |
       | email                 | andy@example.com  |
       | password              | p4$$wd            |
@@ -28,7 +27,6 @@ Feature: Registration
       | unavailable user id         | * Email has already been taken                    | 
     And someone has registered with the email 'andrew@example.com'
     When I complete registration with the following:
-      | Field                 | Value             |
       | name                  | <name>            |
       | email                 | <email>           |
       | password              | <password>        |
