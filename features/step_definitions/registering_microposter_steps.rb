@@ -7,12 +7,8 @@ Before do
   @assistant = RiverGlide::Assistant.new
 end
 
-def number_of_errors_on_this page
+def number_of_errors
   page.find('.alert').text.match(/(\d+)/)[1].to_i
-end
-
-def number_of things
-  list_of(things).size
 end
 
 def for_these things
@@ -22,8 +18,7 @@ alias with_these for_these
 
 World(
   SampleApp::RegisteringMicroblogger,
-  SampleApp::CustomerServices,
-  SampleApp::Advisor
+  SampleApp::CustomerServices
 )
 
 Given /^I have started registration$/ do
@@ -31,7 +26,7 @@ Given /^I have started registration$/ do
 end
 
 Given /^I find this advice helpful$/ do |problem_advisories|
-  @assistant.remember_the :advisories, for_these(problem_advisories)
+  @registration_advisor = SampleApp::Advisor.new with_these(problem_advisories)
 end
 
 When /^I complete registration with the following:$/ do |details|
@@ -49,6 +44,7 @@ Given /^someone has registered with the email '#{ADDRESS}'$/ do |address|
 end
 
 Then /^I should be advised on how to deal with these #{PROBLEMS}$/ do |expected_problems|
-  i_should_see advice_for(expected_problems)
-  number_of_errors_on_this(page).should == number_of(expected_problems)
+  expected_advice = @registration_advisor.advice_for(expected_problems)
+  i_should_see expected_advice 
+  number_of_errors.should == @registration_advisor.number_of(expected_problems)
 end
