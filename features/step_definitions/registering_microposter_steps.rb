@@ -37,12 +37,12 @@ When /^I complete registration with the following:$/ do |table|
   fill_in registration_page['password'], with: details['password']
   fill_in registration_page['password confirmation'], with: details['password confirmation']
   click_on 'Create my account'
-  @user_name = details['name']
+  remember_the :user_name, details['name']
 end
 
 Then /^I should see that I am registered$/ do
   page.should have_css('.alert-success', text: 'Welcome to the Sample App!')
-  page.should have_css('h1', text: @user_name)
+  page.should have_css('h1', text: @memory_of[:user_name])
 end
 
 Given /^someone has registered with the email '#{ADDRESS}'$/ do |email|
