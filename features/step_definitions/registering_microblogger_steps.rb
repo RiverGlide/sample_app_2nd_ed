@@ -7,14 +7,10 @@ Before do
   @assistant = RiverGlide::Assistant.new
 end
 
-def for_these things
-  things.rows_hash
-end
-alias with_these for_these
-
 World(
   SampleApp::RegisteringMicroblogger,
-  SampleApp::CustomerServices
+  SampleApp::CustomerServices,
+  RiverGlide::CucumberLinguist
 )
 
 Given /^I have started registration$/ do
