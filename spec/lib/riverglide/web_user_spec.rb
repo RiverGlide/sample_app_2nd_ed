@@ -1,18 +1,13 @@
 require_relative '../../../features/support/riverglide/web_user.rb'
-require 'capybara'
-require 'capybara/dsl'
 include RiverGlide::WebUser
 
-Capybara.run_server = false
-Capybara.app = lambda {|env| [200, {'Content-Type' => 'text/plain'}, ['Stubbed!']]}
-
 describe RiverGlide::WebUser do
-
-  include Capybara::DSL
 
   it "complains when it can't find a field name for a detail" do
     form = {'email' => 'email_address'}
     details = {'name' => 'andy'}
+
+    stub!(:fill_in)
 
     expect do
       fill_in_the form, details
