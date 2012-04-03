@@ -33,23 +33,49 @@ def i_should_be_registered_as someone
   page.should have_css('h1', text: someone)
 end
 
-def register_me_with details
+def i_should_see some_text
+  page.should have_content some_text
+end
+
+def register_someone_with details
   Factory(:user, :email => details[:email])
 end
+
+def list_of problems
+  problems.split ', '
+end
+
+def advice_for problems
+  advisories = list_of(problems).inject([]) do |advice, for_the_problem| 
+    advice << @assistant.recall_the(:advisories)[for_the_problem]
+  end
+  advisories.join(" ")
+end
+
+def number_of_errors_on_this page
+  page.find('.alert').text.match(/(\d+)/)[1].to_i
+end
+
+def number_of things
+  list_of(things).size
+end
+
+def for_these things
+  things.rows_hash
+end
+alias with_these for_these
 
 Given /^I have started registration$/ do
   start_registration
 end
 
-Given /^I find this advice helpful$/ do |problem_advice|
-  for_these_problems = problem_advice.rows_hash
-  @assistant.remember_the :advice, for_these_problems
+Given /^I find this advice helpful$/ do |problem_advisories|
+  @assistant.remember_the :advisories, for_these(problem_advisories)
 end
 
-When /^I complete registration with the following:$/ do |table|
-  details = table.rows_hash
-  complete @registration_form, details
-  @assistant.remember_the :user_name, details['name']
+When /^I complete registration with the following:$/ do |details|
+  complete @registration_form, with_these(details)
+  @assistant.remember_the :user_name, with_these(details).fetch('name')
 end
 
 Then /^I should see that I am registered$/ do
@@ -58,24 +84,10 @@ Then /^I should see that I am registered$/ do
 end
 
 Given /^someone has registered with the email '#{ADDRESS}'$/ do |address|
-  register_me_with email: address
+  register_someone_with email: address
 end
 
-def advise_me_on_these problems
-  advisories = problems.inject([]) do |advice, for_the_problem| 
-    advice << @assistant.recall_the(:advice)[for_the_problem]
-  end
-  advisories.join(" ")
-end
-
-Then /^I should be advised on how to deal with these #{PROBLEMS}$/ do |problems|
-  expected_problems = problems.split(', ')
-  expected_advice = advise_me_on_these expected_problems
-    
-  number_of_errors_expected = expected_problems.size
-
-  number_of_errors_reported = page.find('.alert').text.match(/(\d+)/)[1].to_i
-  number_of_errors_reported.should == number_of_errors_expected
-
-  page.should have_content expected_advice
+Then /^I should be advised on how to deal with these #{PROBLEMS}$/ do |expected_problems|
+  number_of_errors_on_this(page).should == number_of(expected_problems)
+  i_should_see(advice_for expected_problems)
 end
