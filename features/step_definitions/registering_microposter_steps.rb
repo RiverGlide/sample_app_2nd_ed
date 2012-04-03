@@ -61,10 +61,17 @@ Given /^someone has registered with the email '#{ADDRESS}'$/ do |address|
   register_me_with email: address
 end
 
+def advise_me_on_these problems
+  advisories = problems.inject([]) do |advice, for_the_problem| 
+    advice << @assistant.recall_the(:advice)[for_the_problem]
+  end
+  advisories.join(" ")
+end
+
 Then /^I should be advised on how to deal with these #{PROBLEMS}$/ do |problems|
   expected_problems = problems.split(', ')
-  expected_advisories = expected_problems.inject([]) {|advice, for_the_problem| advice << @assistant.recall_the(:advice)[for_the_problem] }
-  expected_advice = expected_advisories.join(" ")
+  expected_advice = advise_me_on_these expected_problems
+    
   number_of_errors_expected = expected_problems.size
 
   number_of_errors_reported = page.find('.alert').text.match(/(\d+)/)[1].to_i
