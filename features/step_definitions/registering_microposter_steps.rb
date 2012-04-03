@@ -16,6 +16,10 @@ def remember_the relevant, information
   @memory_of[relevant] = information
 end
 
+def recall_the memory
+  @memory_of[memory]
+end
+
 Given /^I have started registration$/ do
   start_registration
 end
@@ -42,7 +46,7 @@ end
 
 Then /^I should see that I am registered$/ do
   page.should have_css('.alert-success', text: 'Welcome to the Sample App!')
-  page.should have_css('h1', text: @memory_of[:user_name])
+  page.should have_css('h1', text: recall_the(:user_name))
 end
 
 Given /^someone has registered with the email '#{ADDRESS}'$/ do |email|
@@ -51,7 +55,7 @@ end
 
 Then /^I should be advised on how to deal with these #{PROBLEMS}$/ do |problems|
   expected_problems = problems.split(', ')
-  expected_advisories = expected_problems.inject([]) {|advice, for_problem| advice << @memory_of[:advice][for_problem] }
+  expected_advisories = expected_problems.inject([]) {|advice, for_the_problem| advice << recall_the(:advice)[for_the_problem] }
   expected_advice = expected_advisories.join(" ")
   number_of_errors_expected = expected_problems.size
 
