@@ -2,6 +2,9 @@ require_relative '../../../features/support/riverglide/web_user.rb'
 include RiverGlide::WebUser
 
 describe RiverGlide::WebUser do
+  # Note: Here we're mocking what we don't own[GOOS book].
+  #       We'd not normally do that but had to make a 
+  #       compromise here temporarily.
 
   it "complains when it can't find a field name for a detail" do
     form = {'email' => 'email_address'}
@@ -11,7 +14,7 @@ describe RiverGlide::WebUser do
 
     expect do
       fill_in_the form, details
-    end.to raise_error(RiverGlide::WebUserComplaint)
+    end.to raise_error(RiverGlide::FormFieldNotFoundComplaint)
   end
 
   it "fills in the form using the form fields and details provided" do
