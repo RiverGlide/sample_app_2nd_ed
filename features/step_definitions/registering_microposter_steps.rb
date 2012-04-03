@@ -5,7 +5,7 @@ PROBLEMS=GREEDY_CAPTURE
 
 Before do
   @assistant = RiverGlide::Assistant.new
-  @registration_page = {
+  @registration_form = {
     'name'                  => 'user_name',
     'email'                 => 'user_email',
     'password'              => 'user_password',
@@ -20,11 +20,11 @@ def start_registration
   page.should have_button 'Create my account'
 end
 
-def complete_registration_with details
-  fill_in @registration_page['name'], :with => details['name']
-  fill_in @registration_page['email'], :with => details['email']
-  fill_in @registration_page['password'], with: details['password']
-  fill_in @registration_page['password confirmation'], with: details['password confirmation']
+def complete the_form, details
+  fill_in the_form['name'], with: details['name']
+  fill_in the_form['email'], with: details['email']
+  fill_in the_form['password'], with: details['password']
+  fill_in the_form['password confirmation'], with: details['password confirmation']
   click_on 'Create my account'
 end
 
@@ -39,7 +39,7 @@ end
 
 When /^I complete registration with the following:$/ do |table|
   details = table.rows_hash
-  complete_registration_with details
+  complete @registration_form, details
   @assistant.remember_the :user_name, details['name']
 end
 
