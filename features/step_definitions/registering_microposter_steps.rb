@@ -7,16 +7,8 @@ Before do
   @assistant = RiverGlide::Assistant.new
 end
 
-def i_should_see some_text
-  page.should have_content some_text
-end
-
 def number_of_errors_on_this page
   page.find('.alert').text.match(/(\d+)/)[1].to_i
-end
-
-def register_someone_with details
-  Factory(:user, :email => details[:email])
 end
 
 def list_of problems
@@ -39,7 +31,10 @@ def for_these things
 end
 alias with_these for_these
 
-World(RegisteringMicroblogger)
+World(
+  SampleApp::RegisteringMicroblogger,
+  SampleApp::CustomerServices
+)
 
 Given /^I have started registration$/ do
   start_registration
