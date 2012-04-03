@@ -6,8 +6,12 @@ module RiverGlide
 
     def fill_in_the form, with_details
       with_details.each do |field, value|
+        raise WebUserComplaint unless form[field]
         fill_in form[field], with: value 
       end
     end
+  end
+
+  class WebUserComplaint < RuntimeError
   end
 end
