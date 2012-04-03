@@ -13,7 +13,6 @@ Feature: Registration
       | email                 | andy@example.com  |
       | password              | p4$$wd            |
       | password confirmation | p4$$wd            |
-    
     Then I should see that I am registered
 
   Scenario Outline: I receive advice about registration problems
@@ -27,7 +26,6 @@ Feature: Registration
       | blank password confirmation | * Password confirmation can't be blank            |
       | mismatched password         | * Password doesn't match confirmation             | 
       | unavailable user id         | * Email has already been taken                    | 
-    
     And someone has registered with the email 'andrew@example.com'
     When I complete registration with the following:
       | Field                 | Value             |
