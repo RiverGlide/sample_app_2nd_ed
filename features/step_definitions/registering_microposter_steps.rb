@@ -20,6 +20,14 @@ def start_registration
   page.should have_button 'Create my account'
 end
 
+def complete_registration_with details
+  fill_in @registration_page['name'], :with => details['name']
+  fill_in @registration_page['email'], :with => details['email']
+  fill_in @registration_page['password'], with: details['password']
+  fill_in @registration_page['password confirmation'], with: details['password confirmation']
+  click_on 'Create my account'
+end
+
 Given /^I have started registration$/ do
   start_registration
 end
@@ -31,11 +39,7 @@ end
 
 When /^I complete registration with the following:$/ do |table|
   details = table.rows_hash
-  fill_in @registration_page['name'], :with => details['name']
-  fill_in @registration_page['email'], :with => details['email']
-  fill_in @registration_page['password'], with: details['password']
-  fill_in @registration_page['password confirmation'], with: details['password confirmation']
-  click_on 'Create my account'
+  complete_registration_with details
   @assistant.remember_the :user_name, details['name']
 end
 
