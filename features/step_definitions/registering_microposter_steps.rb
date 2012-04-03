@@ -3,7 +3,8 @@ MESSAGES='(.*[^\'])'
 ADDRESS=GREEDY_CAPTURE
 PROBLEMS=GREEDY_CAPTURE
   
-Given /^I have started registration$/ do
+
+def start_registration
   visit '/'
   click_on 'Sign up now!'
   page.should have_content 'Sign up'
@@ -12,6 +13,10 @@ end
 
 Given /^I find this advice helpful$/ do |problem_advice|
   @problem_advice = problem_advice.rows_hash
+Given /^I have started registration$/ do
+  start_registration
+end
+
 end
 
 When /^I complete registration with the following:$/ do |table|
