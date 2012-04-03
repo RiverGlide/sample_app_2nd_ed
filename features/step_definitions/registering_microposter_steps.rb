@@ -13,11 +13,18 @@ Before do
   }
 end
 
-def start_registration
-  visit '/'
-  click_on 'Sign up now!'
-  page.should have_content 'Sign up'
-  page.should have_button 'Create my account'
+module RegisteringMicroposter
+  def start_registration
+    visit '/'
+    click_on 'Sign up now!'
+    page.should have_content 'Sign up'
+    page.should have_button 'Create my account'
+  end
+
+  def i_should_be_registered_as someone
+    page.should have_css('.alert-success', text: 'Welcome to the Sample App!')
+    page.should have_css('h1', text: someone)
+  end
 end
 
 def complete the_form, details
@@ -28,13 +35,12 @@ def complete the_form, details
   click_on 'Create my account'
 end
 
-def i_should_be_registered_as someone
-  page.should have_css('.alert-success', text: 'Welcome to the Sample App!')
-  page.should have_css('h1', text: someone)
-end
-
 def i_should_see some_text
   page.should have_content some_text
+end
+
+def number_of_errors_on_this page
+  page.find('.alert').text.match(/(\d+)/)[1].to_i
 end
 
 def register_someone_with details
@@ -52,10 +58,6 @@ def advice_for problems
   advisories.join(" ")
 end
 
-def number_of_errors_on_this page
-  page.find('.alert').text.match(/(\d+)/)[1].to_i
-end
-
 def number_of things
   list_of(things).size
 end
@@ -64,6 +66,8 @@ def for_these things
   things.rows_hash
 end
 alias with_these for_these
+
+World(RegisteringMicroposter)
 
 Given /^I have started registration$/ do
   start_registration
