@@ -4,7 +4,7 @@ ADDRESS=GREEDY_CAPTURE
 PROBLEMS=GREEDY_CAPTURE
 
 Before do
-  @assistant = Assistant.new
+  @assistant = RiverGlide::Assistant.new
 end
 
 def start_registration
@@ -12,17 +12,6 @@ def start_registration
   click_on 'Sign up now!'
   page.should have_content 'Sign up'
   page.should have_button 'Create my account'
-end
-
-class Assistant
-  def remember_the relevant, information
-    @notepad ||= {}
-    @notepad[relevant] = information
-  end
-
-  def recall_the memory
-    @notepad[memory]
-  end
 end
 
 Given /^I have started registration$/ do
