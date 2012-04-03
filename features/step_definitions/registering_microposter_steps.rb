@@ -35,7 +35,7 @@ Then /^I should see that I am registered$/ do
   page.should have_css('h1', text: @user_name)
 end
 
-Given /^a user with the email '#{ADDRESS}' exists$/ do |email|
+Given /^someone has registered with the email '#{ADDRESS}'$/ do |email|
   Factory(:user, :email => email)
 end
 
