@@ -21,6 +21,10 @@ def complete the_form, details
   click_on 'Create my account'
 end
 
+def complete_registration with_details
+  complete @registration_form, with_details
+end
+
 def i_should_see some_text
   page.should have_content some_text
 end
@@ -64,7 +68,7 @@ Given /^I find this advice helpful$/ do |problem_advisories|
 end
 
 When /^I complete registration with the following:$/ do |details|
-  complete @registration_form, with_these(details)
+  complete_registration with_these(details)
   @assistant.remember_the :user_name, with_these(details).fetch('name')
 end
 
