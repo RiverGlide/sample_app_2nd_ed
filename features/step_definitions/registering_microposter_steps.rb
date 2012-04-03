@@ -28,6 +28,11 @@ def complete the_form, details
   click_on 'Create my account'
 end
 
+def i_should_be_registered_as someone
+  page.should have_css('.alert-success', text: 'Welcome to the Sample App!')
+  page.should have_css('h1', text: someone)
+end
+
 Given /^I have started registration$/ do
   start_registration
 end
@@ -45,8 +50,7 @@ end
 
 Then /^I should see that I am registered$/ do
   user_name = @assistant.recall_the :user_name
-  page.should have_css('.alert-success', text: 'Welcome to the Sample App!')
-  page.should have_css('h1', text: user_name)
+  i_should_be_registered_as user_name
 end
 
 Given /^someone has registered with the email '#{ADDRESS}'$/ do |email|
