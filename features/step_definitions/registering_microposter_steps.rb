@@ -5,6 +5,12 @@ PROBLEMS=GREEDY_CAPTURE
 
 Before do
   @assistant = RiverGlide::Assistant.new
+  @registration_page = {
+    'name'                  => 'user_name',
+    'email'                 => 'user_email',
+    'password'              => 'user_password',
+    'password confirmation' => 'user_password_confirmation'
+  }
 end
 
 def start_registration
@@ -24,17 +30,11 @@ Given /^I find this advice helpful$/ do |problem_advice|
 end
 
 When /^I complete registration with the following:$/ do |table|
-  registration_page = {
-    'name'                  => 'user_name',
-    'email'                 => 'user_email',
-    'password'              => 'user_password',
-    'password confirmation' => 'user_password_confirmation'
-  }
   details = table.rows_hash
-  fill_in registration_page['name'], :with => details['name']
-  fill_in registration_page['email'], :with => details['email']
-  fill_in registration_page['password'], with: details['password']
-  fill_in registration_page['password confirmation'], with: details['password confirmation']
+  fill_in @registration_page['name'], :with => details['name']
+  fill_in @registration_page['email'], :with => details['email']
+  fill_in @registration_page['password'], with: details['password']
+  fill_in @registration_page['password confirmation'], with: details['password confirmation']
   click_on 'Create my account'
   @assistant.remember_the :user_name, details['name']
 end
