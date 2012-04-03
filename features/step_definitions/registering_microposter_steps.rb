@@ -5,24 +5,6 @@ PROBLEMS=GREEDY_CAPTURE
 
 Before do
   @assistant = RiverGlide::Assistant.new
-  @registration_form = {
-    'name'                  => 'user_name',
-    'email'                 => 'user_email',
-    'password'              => 'user_password',
-    'password confirmation' => 'user_password_confirmation'
-  }
-end
-
-def complete the_form, details
-  fill_in the_form['name'], with: details['name']
-  fill_in the_form['email'], with: details['email']
-  fill_in the_form['password'], with: details['password']
-  fill_in the_form['password confirmation'], with: details['password confirmation']
-  click_on 'Create my account'
-end
-
-def complete_registration with_details
-  complete @registration_form, with_details
 end
 
 def i_should_see some_text
@@ -82,6 +64,6 @@ Given /^someone has registered with the email '#{ADDRESS}'$/ do |address|
 end
 
 Then /^I should be advised on how to deal with these #{PROBLEMS}$/ do |expected_problems|
-  number_of_errors_on_this(page).should == number_of(expected_problems)
   i_should_see(advice_for expected_problems)
+  number_of_errors_on_this(page).should == number_of(expected_problems)
 end
