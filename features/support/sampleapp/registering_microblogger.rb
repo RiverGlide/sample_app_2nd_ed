@@ -27,5 +27,9 @@ module SampleApp
       page.should have_css('.alert-success', text: 'Welcome to the Sample App!')
       page.should have_css('h1', text: someone)
     end
+
+    def number_of_errors
+      page.find('.alert').text.match(/(\d+)/)[1].to_i
+    end
   end
 end

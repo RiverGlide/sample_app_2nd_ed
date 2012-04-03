@@ -7,10 +7,6 @@ Before do
   @assistant = RiverGlide::Assistant.new
 end
 
-def number_of_errors
-  page.find('.alert').text.match(/(\d+)/)[1].to_i
-end
-
 def for_these things
   things.rows_hash
 end
